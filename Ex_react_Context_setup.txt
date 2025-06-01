@@ -1,0 +1,113 @@
+// Estrutura de Contextos React Modularizada
+
+// 1. Pasta: src/contexts/UserContext.js
+import { createContext } from 'react';
+
+const UserContext = createContext();
+export default UserContext;
+
+// 2. Pasta: src/contexts/UserProvider.jsx
+import { useState } from 'react';
+import UserContext from './UserContext';
+
+const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  const login = (nome) => setUser({ nome });
+  const logout = () => setUser(null);
+
+  return (
+    <UserContext.Provider value={{ user, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export default UserProvider;
+
+// 3. Pasta: src/contexts/ThemeContext.js
+import { createContext } from 'react';
+
+const ThemeContext = createContext();
+export default ThemeContext;
+
+// 4. Pasta: src/contexts/ThemeProvider.jsx
+import { useState } from 'react';
+import ThemeContext from './ThemeContext';
+
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('light');
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export default ThemeProvider;
+
+// 5. Pasta: src/contexts/TaskContext.js
+import { createContext } from 'react';
+
+const TaskContext = createContext();
+export default TaskContext;
+
+// 6. Pasta: src/contexts/TaskProvider.jsx
+import { useState } from 'react';
+import TaskContext from './TaskContext';
+
+const TaskProvider = ({ children }) => {
+  const [taskList, setTaskList] = useState(['Lavar roupa', 'Ir ao mercado']);
+
+  const addToList = (task) => setTaskList([...taskList, task]);
+
+  const removeFromList = (task) => {
+    setTaskList((prev) => prev.filter((t) => t !== task));
+  };
+
+  return (
+    <TaskContext.Provider value={{ taskList, addToList, removeFromList }}>
+      {children}
+    </TaskContext.Provider>
+  );
+};
+
+export default TaskProvider;
+
+// 7. Pasta: src/contexts/AppProviders.jsx
+import UserProvider from './UserProvider';
+import ThemeProvider from './ThemeProvider';
+import TaskProvider from './TaskProvider';
+
+const AppProviders = ({ children }) => {
+  return (
+    <UserProvider>
+      <ThemeProvider>
+        <TaskProvider>
+          {children}
+        </TaskProvider>
+      </ThemeProvider>
+    </UserProvider>
+  );
+};
+
+export default AppProviders;
+
+// 8. src/main.jsx (ou index.js)
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import AppProviders from './contexts/AppProviders';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <AppProviders>
+      <App />
+    </AppProviders>
+  </React.StrictMode>
+);

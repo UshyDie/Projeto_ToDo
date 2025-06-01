@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Item from './Item';
-import TaskContext from './TaskContext';
+import { useTaskContext } from './useTaskContext';
 const ItemsContainer = () => {
-  const { taskList, removeFromList } = useContext(TaskContext);
+  const { taskList, removeFromList } = useTaskContext();
   const [checked, setChecked] = useState(false);
   return (
     <div className='items-container'>

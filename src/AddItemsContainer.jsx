@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
-import TaskContext from './TaskContext';
+import { useState } from 'react';
+import { useTaskContext } from './useTaskContext';
 
 const AddItemsContainer = () => {
   // let newTask = ''; --> usando assim a variavel, o React redefine sempre como vazia ao ser renderizado
   const [newTask, setNewTask] = useState('');
-  const { addToList } = useContext(TaskContext);
+  const { addToList } = useTaskContext();
   return (
     <div className='add-items-container'>
       <input
